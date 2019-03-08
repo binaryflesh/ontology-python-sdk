@@ -10,7 +10,6 @@ from ontology.crypto.digest import Digest
 from ontology.crypto.scrypt import Scrypt
 from ontology.common.define import DID_ONT
 from ontology.common.address import Address
-from ontology.crypto.key_type import KeyType
 from ontology.crypto.signature import Signature
 from ontology.crypto.aes_handler import AESHandler
 from ontology.io.binary_writer import BinaryWriter
@@ -26,16 +25,10 @@ class Account(object):
         self.__signature = SignatureHandler(scheme)
         self.__signature_gen = functools.partial(self.__signature.generate_signature)
         self.__signature_ok = functools.partial(self.__signature.verify_signature)
-        if scheme == SignatureScheme.SHA256withECDSA:
-            self.__key_type = KeyType.ECDSA
-        elif scheme == SignatureScheme.SHA3_384withECDSA:
-            self.__key_type = KeyType.ECDSA
-        elif scheme == SignatureScheme.SHA512withECDSA:
-            self.__key_type = KeyType.ECDSA
-        elif scheme == SignatureScheme.SHA3_224withECDSA:
-            self.__key_type = KeyType.ECDSA
-        else:
-            raise TypeError
+        _ = SignatureScheme
+        _ecdsa = [_.SHA256withECDSA, _.SHA3_224withECDSA, _.SHA3_384withECDSA, _.SHA3_512withECDSA]
+        if scheme not in any(_ecdsa):
+            raise SDKException(ErrorCode.unknown_asymmetric_key_type)
         if isinstance(private_key, bytes) and len(private_key) == 32:
             self.__private_key = private_key
         elif isinstance(private_key, str) and len(private_key) == 64:
@@ -48,7 +41,7 @@ class Account(object):
 
     def generate_signature(self, msg: bytes) -> object:
         """
-        Generate verified message signed with key pair.
+        Generates a signed message signed with account key pair.
         :param msg: message to sign
         :type msg: bytes
         :return: signed message
@@ -156,10 +149,7 @@ class Account(object):
     def get_public_key_serialize(self):
         stream = StreamManager.get_stream()
         writer = BinaryWriter(stream)
-        if self.__key_type == KeyType.ECDSA:
-            writer.write_var_bytes(self.__public_key)
-        else:
-            raise SDKException(ErrorCode.unknown_asymmetric_key_type)
+        writer.write_var_bytes(self.__public_key)
         stream.flush()
         bytes_stream = stream.hexlify()
         StreamManager.release_stream(stream)
