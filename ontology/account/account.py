@@ -4,6 +4,7 @@
 import base64
 import base58
 import functools
+import math
 
 from ontology.crypto.curve import Curve
 from ontology.crypto.digest import Digest
@@ -29,12 +30,11 @@ class Account(object):
         _ecdsa = [_.SHA256withECDSA, _.SHA3_224withECDSA, _.SHA3_384withECDSA, _.SHA3_512withECDSA]
         if scheme not in any(_ecdsa):
             raise SDKException(ErrorCode.unknown_asymmetric_key_type)
-        if isinstance(private_key, bytes) and len(private_key) == 32:
-            self.__private_key = private_key
-        elif isinstance(private_key, str) and len(private_key) == 64:
-            self.__private_key = bytes.fromhex(private_key)
-        else:
+        if not isinstance(private_key, bytes or str):
             raise SDKException(ErrorCode.invalid_private_key)
+        if not math.log(len(private_key), 32).is_integer():
+            raise SDKException(ErrorCode.pri_key_length_error)
+        self.__private_key = bytes.fromhex(private_key) if len(private_key) > 32 else private_key
         self.__curve_name = Curve.P256
         self.__public_key = Signature.ec_get_public_key_by_private_key(self.__private_key, self.__curve_name)
         self.__address = Address.address_from_bytes_pubkey(self.__public_key)
