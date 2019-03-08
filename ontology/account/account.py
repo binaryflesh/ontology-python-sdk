@@ -3,6 +3,7 @@
 
 import base64
 import base58
+import functools
 
 from ontology.crypto.curve import Curve
 from ontology.crypto.digest import Digest
@@ -22,7 +23,9 @@ from ontology.crypto.signature_handler import SignatureHandler
 
 class Account(object):
     def __init__(self, private_key: str or bytes, scheme=SignatureScheme.SHA256withECDSA):
-        self.__signature_scheme = scheme
+        self.__signature = SignatureHandler(scheme)
+        self.__signature_gen = functools.partial(self.__signature.generate_signature)
+        self.__signature_ok = functools.partial(self.__signature.verify_signature)
         if scheme == SignatureScheme.SHA256withECDSA:
             self.__key_type = KeyType.ECDSA
         elif scheme == SignatureScheme.SHA3_384withECDSA:
@@ -43,20 +46,19 @@ class Account(object):
         self.__public_key = Signature.ec_get_public_key_by_private_key(self.__private_key, self.__curve_name)
         self.__address = Address.address_from_bytes_pubkey(self.__public_key)
 
-    def generate_signature(self, msg: bytes):
-        handler = SignatureHandler(self.__signature_scheme)
-        signature_value = handler.generate_signature(bytes.hex(self.__private_key), msg)
-        bytes_signature = Signature(self.__signature_scheme, signature_value).to_bytes()
-        result = handler.verify_signature(self.__public_key, msg, bytes_signature)
-        if not result:
+    def generate_signature(self, msg: bytes) -> object:
+        """
+        Generate and return verified message signed with key pair.
+        :param msg: message to sign
+        :type msg: bytes
+        :return: signed message
+        :rtype: Signature
+        """
+        __signature = self.__signature_gen(self.get_private_key_hex(), msg)
+        _signature = Signature(__signature.__scheme, __signature)
+        if not self.__signature_ok(self.get_public_key_bytes(), msg, _signature.to_bytes()):
             raise SDKException(ErrorCode.invalid_signature_data)
-        return bytes_signature
-
-    def verify_signature(self, msg: bytes, signature: bytes):
-        if msg is None or signature is None:
-            raise Exception(ErrorCode.param_err("param should not be None"))
-        handler = SignatureHandler(self.__signature_scheme)
-        return handler.verify_signature(self.get_public_key_bytes(), msg, signature)
+        return _signature
 
     def get_ont_id(self):
         return DID_ONT + self.get_address_base58()
@@ -94,14 +96,6 @@ class Account(object):
         :return: big-endian hexadecimal account address.
         """
         return self.__address.to_reverse_hex_str()
-
-    def get_signature_scheme(self) -> SignatureScheme:
-        """
-        This interface allow to get he signature scheme used in account
-
-        :return: he signature scheme used in account.
-        """
-        return self.__signature_scheme
 
     def export_gcm_encrypted_private_key(self, password: str, salt: str, n: int = 16384) -> str:
         """
