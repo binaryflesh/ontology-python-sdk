@@ -48,7 +48,7 @@ class Account(object):
 
     def generate_signature(self, msg: bytes) -> object:
         """
-        Generate and return verified message signed with key pair.
+        Generate verified message signed with key pair.
         :param msg: message to sign
         :type msg: bytes
         :return: signed message
