@@ -27,8 +27,6 @@ class Account(object):
             self.__key_type = KeyType.ECDSA
         elif scheme == SignatureScheme.SHA3_384withECDSA:
             self.__key_type = KeyType.ECDSA
-        elif scheme == SignatureScheme.SHA3_384withECDSA:
-            self.__key_type = KeyType.ECDSA
         elif scheme == SignatureScheme.SHA512withECDSA:
             self.__key_type = KeyType.ECDSA
         elif scheme == SignatureScheme.SHA3_224withECDSA:
