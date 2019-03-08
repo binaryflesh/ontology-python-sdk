@@ -31,10 +31,17 @@ SUPPORTED_KEY_TYPES = [KeyType.ECDSA]
 
 
 class Account(object):
+    """
+    Account - Ontology account interface
+
+    :parameter private_key: private_key
+    :parameter scheme: SignatureScheme
+    """
+
     def __init__(self, pri_key: bytearray or bytes, scheme: SignatureScheme = _SHA256):
         """
         :param private_key: private key
-        :type private_key: str or bytes
+        :type private_key: bytearray or bytes
         :param scheme: Signature Scheme
         :type scheme: SignatureScheme
         """
@@ -86,9 +93,7 @@ class Account(object):
         :param n: CPU/memory cost parameter. It must be a power of 2 and less than 2**32
         :return: an gcm encrypted private key in the form of string.
         """
-        r = 8
-        p = 8
-        dk_len = 64
+        r, p, dk_len = 8, 8, 64
         scrypt = Scrypt(n, r, p, dk_len)
         derived_key = scrypt.generate_kd(password, salt)
         iv = derived_key[0:12]
@@ -113,9 +118,7 @@ class Account(object):
         :param scheme: the signature scheme.
         :return: a private key in the form of string.
         """
-        r = 8
-        p = 8
-        dk_len = 64
+        r, p, dk_len = 8, 8, 64
         scrypt = Scrypt(n, r, p, dk_len)
         derived_key = scrypt.generate_kd(password, salt)
         iv = derived_key[0:12]
