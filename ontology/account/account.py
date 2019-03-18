@@ -1,5 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import math
 import base64
 import base58
+import functools
 
 from ontology.crypto.curve import Curve
 from ontology.crypto.digest import Digest
@@ -16,91 +21,66 @@ from ontology.exception.exception import SDKException
 from ontology.crypto.signature_scheme import SignatureScheme
 from ontology.crypto.signature_handler import SignatureHandler
 
+_SHA256 = SignatureScheme.SHA256withECDSA
+_SHA3_224 = SignatureScheme.SHA3_224withECDSA
+_SHA3_384 = SignatureScheme.SHA3_384withECDSA
+_SHA512 = SignatureScheme.SHA512withECDSA
+
+SUPPORTED_SCHEMES = [_SHA256, _SHA3_224, _SHA3_384, _SHA512]
+SUPPORTED_KEY_TYPES = [KeyType.ECDSA]
+
 
 class Account(object):
-    def __init__(self, private_key: str or bytes, scheme=SignatureScheme.SHA256withECDSA):
-        self.__signature_scheme = scheme
-        if scheme == SignatureScheme.SHA256withECDSA:
-            self.__key_type = KeyType.ECDSA
-        elif scheme == SignatureScheme.SHA3_384withECDSA:
-            self.__key_type = KeyType.ECDSA
-        elif scheme == SignatureScheme.SHA3_384withECDSA:
-            self.__key_type = KeyType.ECDSA
-        elif scheme == SignatureScheme.SHA512withECDSA:
-            self.__key_type = KeyType.ECDSA
-        elif scheme == SignatureScheme.SHA3_224withECDSA:
-            self.__key_type = KeyType.ECDSA
-        else:
-            raise TypeError
-        if isinstance(private_key, bytes) and len(private_key) == 32:
-            self.__private_key = private_key
-        elif isinstance(private_key, str) and len(private_key) == 64:
-            self.__private_key = bytes.fromhex(private_key)
-        else:
-            raise SDKException(ErrorCode.invalid_private_key)
-        self.__curve_name = Curve.P256
-        self.__public_key = Signature.ec_get_public_key_by_private_key(self.__private_key, self.__curve_name)
-        self.__address = Address.address_from_bytes_pubkey(self.__public_key)
+    """
+    Account - Ontology account interface
 
-    def generate_signature(self, msg: bytes):
-        handler = SignatureHandler(self.__signature_scheme)
-        signature_value = handler.generate_signature(bytes.hex(self.__private_key), msg)
-        bytes_signature = Signature(self.__signature_scheme, signature_value).to_bytes()
-        result = handler.verify_signature(self.__public_key, msg, bytes_signature)
-        if not result:
-            raise SDKException(ErrorCode.invalid_signature_data)
-        return bytes_signature
+    :parameter private_key: private_key
+    :parameter scheme: SignatureScheme
+    """
 
-    def verify_signature(self, msg: bytes, signature: bytes):
-        if msg is None or signature is None:
-            raise Exception(ErrorCode.param_err("param should not be None"))
-        handler = SignatureHandler(self.__signature_scheme)
-        return handler.verify_signature(self.get_public_key_bytes(), msg, signature)
-
-    def get_ont_id(self):
-        return DID_ONT + self.get_address_base58()
-
-    def get_address(self):
+    def __init__(self, pri_key: bytearray or bytes, scheme: SignatureScheme = _SHA256):
         """
-
-        :return:
+        :param private_key: private key
+        :type private_key: bytearray or bytes
+        :param scheme: Signature Scheme
+        :type scheme: SignatureScheme
         """
-        return self.__address  # __address is a class not a string or bytes
+        if scheme not in SUPPORTED_SCHEMES:
+            raise NotImplementedError(f'Signature Scheme must be {iter(*SUPPORTED_SCHEMES)}') from scheme
 
-    def get_address_bytes(self):
-        return self.__address.to_bytes()
+        self._scheme = SignatureScheme(scheme)
+        self._handle = SignatureHandler(scheme)
 
-    def get_address_base58(self) -> str:
+        if not isinstance(pri_key, bytearray or bytes):
+            raise TypeError('WIF is an array, AES-G/CM is bytes') from pri_key
+        elif not math.log(len(pri_key).bit_length(), 32).is_integer():
+            raise BytesWarning('WIF is base58 encoded, AES-G/CM is base64 encoded') from pri_key
+
+        self._sign = functools.partial(self._handle.generate_signature)
+        self.__sign_ok = functools.partial(self._handle.verify_signature)
+
+        _pub_key = Signature.ec_get_public_key_by_private_key # TODO: shorten
+        self.pub_key = _pub_key(pri_key, curve_name=Curve.P256)
+
+        __address = Address.address_from_bytes_pubkey(self.pub_key)
+
+        self.address = base58.b58encode(bytes.fromhex(__address))
+
+        self.__private_key = pri_key # TODO expose on needed basis
+        self.ont_id = DID_ONT + self.address.base58
+
+    def generate_signature(self, msg: bytes) -> bytes:
         """
-        This interface is used to get the base58 encode account address.
-
-        :return:
+        Generates a signed message signed with account key pair.
+        :param msg: message to sign
+        :type msg: bytes
+        :return: signed message
+        :rtype: Signature
         """
-        return self.__address.b58encode()
-
-    def get_address_hex(self):
-        """
-        This interface is used to get the little-endian hexadecimal account address.
-
-        :return: little-endian hexadecimal account address.
-        """
-        return self.__address.to_hex_str()
-
-    def get_address_hex_reverse(self):
-        """
-        This interface is used to get the big-endian hexadecimal account address.
-
-        :return: big-endian hexadecimal account address.
-        """
-        return self.__address.to_reverse_hex_str()
-
-    def get_signature_scheme(self) -> SignatureScheme:
-        """
-        This interface allow to get he signature scheme used in account
-
-        :return: he signature scheme used in account.
-        """
-        return self.__signature_scheme
+        signature = Signature(self._scheme, self._sign(self.get_private_key_hex(), msg)).to_bytes()
+        if not self.__sign_ok(self.get_public_key_bytes(), msg, signature):
+            raise ArithmeticError('Invalid key pair')
+        return signature
 
     def export_gcm_encrypted_private_key(self, password: str, salt: str, n: int = 16384) -> str:
         """
@@ -113,14 +93,12 @@ class Account(object):
         :param n: CPU/memory cost parameter. It must be a power of 2 and less than 2**32
         :return: an gcm encrypted private key in the form of string.
         """
-        r = 8
-        p = 8
-        dk_len = 64
+        r, p, dk_len = 8, 8, 64
         scrypt = Scrypt(n, r, p, dk_len)
         derived_key = scrypt.generate_kd(password, salt)
         iv = derived_key[0:12]
         key = derived_key[32:64]
-        hdr = self.__address.b58encode().encode()
+        hdr = self.address
         mac_tag, cipher_text = AESHandler.aes_gcm_encrypt_with_iv(self.__private_key, hdr, key, iv)
         encrypted_key = bytes.hex(cipher_text) + bytes.hex(mac_tag)
         encrypted_key_str = base64.b64encode(bytes.fromhex(encrypted_key))
@@ -140,9 +118,7 @@ class Account(object):
         :param scheme: the signature scheme.
         :return: a private key in the form of string.
         """
-        r = 8
-        p = 8
-        dk_len = 64
+        r, p, dk_len = 8, 8, 64
         scrypt = Scrypt(n, r, p, dk_len)
         derived_key = scrypt.generate_kd(password, salt)
         iv = derived_key[0:12]
@@ -153,18 +129,14 @@ class Account(object):
         private_key = AESHandler.aes_gcm_decrypt_with_iv(cipher_text, b58_address.encode(), mac_tag, key, iv)
         if len(private_key) == 0:
             raise SDKException(ErrorCode.decrypt_encrypted_private_key_error)
-        acct = Account(private_key, scheme)
-        if acct.get_address().b58encode() != b58_address:
+        if Account(private_key, scheme).address != b58_address:
             raise SDKException(ErrorCode.other_error('Address error.'))
         return private_key.hex()
 
     def get_public_key_serialize(self):
         stream = StreamManager.get_stream()
         writer = BinaryWriter(stream)
-        if self.__key_type == KeyType.ECDSA:
-            writer.write_var_bytes(self.__public_key)
-        else:
-            raise SDKException(ErrorCode.unknown_asymmetric_key_type)
+        writer.write_var_bytes(self.pub_key)
         stream.flush()
         bytes_stream = stream.hexlify()
         StreamManager.release_stream(stream)
@@ -192,7 +164,7 @@ class Account(object):
 
         :return: the public key in the form of bytes.
         """
-        return self.__public_key
+        return self.pub_key
 
     def get_public_key_bytearray(self) -> bytearray:
         """
@@ -200,7 +172,7 @@ class Account(object):
 
         :return: the public key in the form of bytearray.
         """
-        return bytearray(self.__public_key)
+        return bytearray(self.pub_key)
 
     def get_public_key_hex(self) -> str:
         """
@@ -208,7 +180,7 @@ class Account(object):
 
         :return: the hexadecimal public key in the form of string.
         """
-        return bytes.hex(self.__public_key)
+        return bytes.hex(self.pub_key)
 
     def export_wif(self) -> str:
         """
