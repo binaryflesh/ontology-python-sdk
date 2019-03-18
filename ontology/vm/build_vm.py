@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from ontology.vm.op_code import *
 from ontology.vm.params_builder import ParamsBuilder
 

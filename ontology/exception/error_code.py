@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-
 class ErrorCode:
     @staticmethod
     def get_error(code: int, msg: str) -> dict:

@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-import threading
-
 from Cryptodome.Random.random import choice
 
 from ontology.service.service import Service

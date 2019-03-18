@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-
 from ontology.crypto.digest import Digest
 from ontology.utils.crypto import str_to_bytes
 

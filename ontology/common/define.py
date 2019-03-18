@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 VERSION_TRANSACTION = b'\x00'
 VERSION_CONTRACT_ONT = b'\x00'
 VERSION_CONTRACT_ONG = b'\x00'

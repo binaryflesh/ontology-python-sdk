@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import binascii
 
 from ontology.utils.utils import bytes_reader

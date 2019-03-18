@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from ontology.core.transaction import Transaction, TransactionType
 from ontology.io.binary_writer import BinaryWriter
 

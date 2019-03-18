@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 from ontology.smart_contract.neo_contract.abi.build_params import BuildParams
 
 

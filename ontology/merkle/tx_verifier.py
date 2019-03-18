@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import threading
 
 from ontology.merkle.merkle_verifier import MerkleVerifier

@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-
 class Parameter(object):
 
     def __init__(self, name: str, type_value: str, value=None):

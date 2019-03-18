@@ -5,4 +5,3 @@ class Struct(object):
     def add(self, *objs):
         for obj in objs:
             self.param_list.append(obj)
-

@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from ontology.io.memory_stream import MemoryStream
 from ontology.exception.error_code import ErrorCode
 from ontology.exception.exception import SDKException

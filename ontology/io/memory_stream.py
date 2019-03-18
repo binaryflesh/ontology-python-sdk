@@ -1,12 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+from io import BytesIO
+from binascii import hexlify
 
 """
 Ontology MemoryStream
 """
-
-from io import BytesIO
-from binascii import hexlify
 
 __mstreams__ = []
 __mstreams_available__ = []

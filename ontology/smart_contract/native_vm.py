@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from ontology.smart_contract.native_contract.asset import Asset
 from ontology.smart_contract.native_contract.ontid import OntId
 from ontology.smart_contract.native_contract.governance import Governance

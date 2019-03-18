@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from ecdsa.curves import NIST256p
 from ecdsa.ellipticcurve import Point
 from ecdsa.numbertheory import square_root_mod_prime

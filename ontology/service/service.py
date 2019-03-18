@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from ontology.claim.claim import Claim
 from ontology.sigsvr.sigsvr import SigSvr
 from ontology.claim.proof import BlockchainProof

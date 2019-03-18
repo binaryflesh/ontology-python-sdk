@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from ecdsa import util, curves, SigningKey
 
 from ontology.crypto.curve import Curve
