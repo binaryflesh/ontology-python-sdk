@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from os import path, environ
 
 from ontology.ont_sdk import OntologySdk
