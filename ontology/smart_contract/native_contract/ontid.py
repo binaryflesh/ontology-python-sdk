@@ -1,11 +1,11 @@
-from time import time
+import time
 
+from ontology import check_ont_id
 from ontology.vm import build_vm
+from ontology.account import Account
 from ontology.crypto.curve import Curve
 from ontology.common.address import Address
 from ontology.crypto.key_type import KeyType
-from account import Account
-from ontology.utils.arguments import check_ont_id
 from ontology.core.transaction import Transaction
 from ontology.io.binary_reader import BinaryReader
 from ontology.io.memory_stream import StreamManager
@@ -151,14 +151,14 @@ class OntId(object):
         else:
             raise SDKException(ErrorCode.require_str_params)
         invoke_code = build_vm.build_native_invoke_code(self.__contract_address, self.__version, method, args)
-        tx = Transaction(0, 0xd1, int(time()), gas_price, gas_limit, payer, invoke_code, bytearray(), [])
+        tx = Transaction(0, 0xd1, int(time.time()), gas_price, gas_limit, payer, invoke_code, bytearray(), [])
         return tx
 
     @check_ont_id
     def get_public_keys(self, ont_id: str):
         args = dict(ontid=ont_id.encode('utf-8'))
         invoke_code = build_vm.build_native_invoke_code(self.__contract_address, self.__version, 'getPublicKeys', args)
-        unix_time_now = int(time())
+        unix_time_now = int(time.time())
         tx = Transaction(0, 0xd1, unix_time_now, 0, 0, None, invoke_code, bytearray(), [])
         response = self.__sdk.get_network().send_raw_transaction_pre_exec(tx)
         pub_keys = OntId.parse_pub_keys(ont_id, response['Result'])
@@ -174,7 +174,7 @@ class OntId(object):
         """
         args = dict(ontid=ont_id.encode('utf-8'))
         invoke_code = build_vm.build_native_invoke_code(self.__contract_address, self.__version, 'getDDO', args)
-        unix_time_now = int(time())
+        unix_time_now = int(time.time())
         tx = Transaction(0, 0xd1, unix_time_now, 0, 0, None, invoke_code, bytearray(), [])
         response = self.__sdk.rpc.send_raw_transaction_pre_exec(tx)
         ddo = OntId.parse_ddo(ont_id, response['Result'])
