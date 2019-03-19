@@ -1,3 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+from ._claim import Claim as claim
 
+__all__ = (
+    "claim",
+    "header",
+    "payload",
+    "proof",
+)

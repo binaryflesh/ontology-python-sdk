@@ -1,6 +1,5 @@
+from .merkle import MerkleVerifier
 import threading
-
-from ontology.merkle.merkle_verifier import MerkleVerifier
 
 
 class TxVerifier(object):

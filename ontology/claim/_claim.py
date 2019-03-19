@@ -1,16 +1,16 @@
+from .proof import Proof
+from .header import Header
+from .verify import Merkle
+from .payload import Payload
+
 import uuid
-import base64
 import time
+import base64
 
 from ontology.account import Account
-from ontology.exception import SDKException, ErrorCode
-
-from ontology.claim.header import Header
 from ontology.crypto.digest import Digest
-from ontology.claim.payload import Payload
-from ontology.claim.proof import BlockchainProof
-from ontology.merkle.merkle_verifier import MerkleVerifier
 from ontology.crypto.signature_handler import SignatureHandler
+from ontology.exception import SDKException, ErrorCode
 
 
 class Claim(object):
@@ -19,7 +19,7 @@ class Claim(object):
         self.__head = None
         self.__payload = None
         self.__signature = b''
-        self.__blk_proof = BlockchainProof(sdk)
+        self.__blk_proof = Proof(sdk)
 
     def __iter__(self):
         data = dict(Header=dict(self.__head), Payload=dict(self.__payload), Signature=self.to_str_signature(),
@@ -128,7 +128,7 @@ class Claim(object):
             self.__sdk.neo_vm.claim_record().hex_contract_address = hex_contract_address
         tx_hash = self.__sdk.neo_vm.claim_record().commit(self.payload.jti, iss_acct, self.payload.sub, payer,
                                                           gas_limit, gas_price)
-        sleep(12)
+        time.sleep(12)
         hex_contract_address = self.__sdk.neo_vm.claim_record().hex_contract_address
         merkle_proof = self.__sdk.get_network().get_merkle_proof(tx_hash)
         tx_block_height = merkle_proof['BlockHeight']

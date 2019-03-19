@@ -1,8 +1,8 @@
 import base64
 import json
 
+from claim.verify import MerkleRoot
 from ontology.exception import SDKException, ErrorCode
-from ontology.merkle.merkle_verifier import MerkleVerifier
 
 
 class BlockchainProof(object):
@@ -90,7 +90,7 @@ class BlockchainProof(object):
         blk_head = block.get('Header', dict())
         target_hash = blk_head.get('TransactionsRoot', '')
         try:
-            result = MerkleVerifier.validate_proof(proof_node, target_hash, merkle_root, is_big_endian)
+            result = MerkleRoot.validate_proof(proof_node, target_hash, merkle_root, is_big_endian)
         except SDKException:
             result = False
         return result

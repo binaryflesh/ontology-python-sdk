@@ -4,7 +4,7 @@ import unittest
 
 from time import time, sleep
 
-from ontology.claim.claim import Claim
+from ontology.claim import Claim
 from ontology.claim.header import Header
 from ontology.claim.payload import Payload
 from ontology.claim.proof import BlockchainProof
