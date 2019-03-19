@@ -1,7 +1,7 @@
 from time import time
 from binascii import a2b_hex
 
-from ontology.account.account import Account
+from account import Account
 from ontology.common.address import Address
 from ontology.core.transaction import Transaction
 from ontology.io.binary_reader import BinaryReader

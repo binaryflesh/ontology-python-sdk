@@ -6,7 +6,7 @@ import unittest
 from test import password
 
 from ontology.utils import utils
-from ontology.account.account import Account
+from account import Account
 from ontology.wallet.account import AccountData
 from ontology.crypto.signature_scheme import SignatureScheme
 

@@ -10,7 +10,7 @@ from test import sdk, acct2, acct3, acct4, password
 from ontology.utils import utils
 from ontology.crypto.curve import Curve
 from ontology.common.define import DID_ONT
-from ontology.account.account import Account
+from account import Account
 from ontology.crypto.signature import Signature
 from ontology.exception.exception import SDKException
 from ontology.utils.contract_data import ContractDataParser

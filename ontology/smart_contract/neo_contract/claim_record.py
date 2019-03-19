@@ -1,4 +1,4 @@
-from ontology.account.account import Account
+from account import Account
 from ontology.exception.error_code import ErrorCode
 from ontology.exception.exception import SDKException
 from ontology.utils.contract_data import ContractDataParser

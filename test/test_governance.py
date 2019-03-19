@@ -1,8 +1,4 @@
-import os
-import time
-import unittest
-
-from ontology.account.account import Account
+from account import Account
 from ontology.ont_sdk import OntologySdk
 
 sdk = OntologySdk()

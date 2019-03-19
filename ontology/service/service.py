@@ -1,5 +1,5 @@
 from ontology.claim.claim import Claim
-from ontology.sigsvr.sigsvr import SigSvr
+from sigsvr import SigSvr
 from ontology.claim.proof import BlockchainProof
 from ontology.merkle.tx_verifier import TxVerifier
 

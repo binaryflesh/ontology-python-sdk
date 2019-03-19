@@ -12,7 +12,7 @@ from ontology.common.define import DID_ONT
 from ontology.crypto.scrypt import Scrypt
 from ontology.wallet.control import Control
 from ontology.common.address import Address
-from ontology.account.account import Account
+from account import Account
 from ontology.wallet.wallet import WalletData
 from ontology.wallet.identity import Identity
 from ontology.wallet.account import AccountData

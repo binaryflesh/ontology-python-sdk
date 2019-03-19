@@ -9,7 +9,7 @@ from test import password
 
 from ontology.utils import utils
 from ontology.crypto.curve import Curve
-from ontology.account.account import Account
+from account import Account
 from ontology.wallet.account import AccountData
 from ontology.crypto.signature import Signature
 from ontology.exception.exception import SDKException

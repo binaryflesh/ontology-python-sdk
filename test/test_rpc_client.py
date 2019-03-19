@@ -6,7 +6,7 @@ import unittest
 from test import sdk, acct1, acct2, acct3
 
 from ontology.common.address import Address
-from ontology.account.account import Account
+from account import Account
 from ontology.utils.utils import get_random_hex_str
 from ontology.exception.exception import SDKException
 from ontology.utils.contract_data import ContractDataParser

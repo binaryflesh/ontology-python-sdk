@@ -7,7 +7,7 @@ from typing import List
 
 from Cryptodome.Random.random import randint
 
-from ontology.account.account import Account
+from account import Account
 from ontology.smart_contract.neo_vm import NeoVm
 from ontology.core.transaction import Transaction
 from ontology.exception.error_code import ErrorCode

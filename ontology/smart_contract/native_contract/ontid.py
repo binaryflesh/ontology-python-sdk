@@ -4,7 +4,7 @@ from ontology.vm import build_vm
 from ontology.crypto.curve import Curve
 from ontology.common.address import Address
 from ontology.crypto.key_type import KeyType
-from ontology.account.account import Account
+from account import Account
 from ontology.utils.arguments import check_ont_id
 from ontology.core.transaction import Transaction
 from ontology.io.binary_reader import BinaryReader

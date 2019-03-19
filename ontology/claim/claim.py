@@ -6,7 +6,7 @@ from time import time, sleep
 from ontology.claim.header import Header
 from ontology.crypto.digest import Digest
 from ontology.claim.payload import Payload
-from ontology.account.account import Account
+from account import Account
 from ontology.claim.proof import BlockchainProof
 from ontology.exception.error_code import ErrorCode
 from ontology.exception.exception import SDKException

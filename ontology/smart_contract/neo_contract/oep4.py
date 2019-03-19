@@ -1,7 +1,7 @@
 import time
 
 from ontology.common.address import Address
-from ontology.account.account import Account
+from account import Account
 from ontology.exception.error_code import ErrorCode
 from ontology.core.transaction import Transaction
 from ontology.exception.exception import SDKException

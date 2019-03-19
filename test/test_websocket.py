@@ -5,7 +5,7 @@ import unittest
 
 from test import sdk, acct1, acct2, acct3, acct4
 
-from ontology.account.account import Account
+from account import Account
 from ontology.exception.error_code import ErrorCode
 from ontology.exception.exception import SDKException
 from ontology.utils.contract_data import ContractDataParser
