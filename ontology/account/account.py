@@ -43,6 +43,7 @@ class Account(object):
         self.__address = Address.address_from_bytes_pubkey(self.__public_key)
 
     def generate_signature(self, msg: bytes):
+        """Generate verified message signed with key pair."""
         handler = SignatureHandler(self.__signature_scheme)
         signature_value = handler.generate_signature(bytes.hex(self.__private_key), msg)
         bytes_signature = Signature(self.__signature_scheme, signature_value).to_bytes()
