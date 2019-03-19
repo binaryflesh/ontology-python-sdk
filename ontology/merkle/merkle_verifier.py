@@ -1,8 +1,7 @@
 from typing import List
 
 from ontology.crypto.digest import Digest
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.utils.contract_data import ContractDataParser
 
 

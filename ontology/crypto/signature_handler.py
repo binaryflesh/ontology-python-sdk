@@ -14,8 +14,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.asymmetric import utils
 
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.crypto.signature_scheme import SignatureScheme
 
 

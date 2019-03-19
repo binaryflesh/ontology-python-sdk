@@ -1,8 +1,7 @@
 from enum import Enum, unique
 
+from ontology.exception import SDKException, ErrorCode
 from ontology.crypto.signature_scheme import SignatureScheme
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
 
 
 @unique

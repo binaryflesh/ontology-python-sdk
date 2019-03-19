@@ -7,8 +7,7 @@ from sys import maxsize
 
 from Cryptodome.Random.random import randint
 
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 
 
 class SigSvr(object):

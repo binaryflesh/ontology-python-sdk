@@ -1,9 +1,8 @@
 from enum import Enum
 
 from ontology.utils import utils
-from ontology.exception.error_code import ErrorCode
 from ontology.vm.params_builder import ParamsBuilder
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.smart_contract.neo_contract.abi.struct_type import Struct
 from ontology.smart_contract.neo_contract.abi.abi_function import AbiFunction
 

@@ -10,8 +10,7 @@ from Cryptodome.Random.random import randint
 from account import Account
 from ontology.smart_contract.neo_vm import NeoVm
 from ontology.core.transaction import Transaction
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.utils.transaction import ensure_bytearray_contract_address
 from ontology.smart_contract.neo_contract.abi.abi_function import AbiFunction
 from ontology.smart_contract.neo_contract.abi.build_params import BuildParams

@@ -1,8 +1,7 @@
 from ecdsa import util, curves, SigningKey
 
 from ontology.crypto.curve import Curve
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.crypto.signature_scheme import SignatureScheme
 
 

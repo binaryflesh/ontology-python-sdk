@@ -4,8 +4,7 @@ from ontology.common.address import Address
 from ontology.vm.op_code import PUSHM1, PUSH0
 from ontology.io.binary_reader import BinaryReader
 from ontology.io.memory_stream import StreamManager
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.smart_contract.neo_contract.abi.struct_type import Struct
 from ontology.smart_contract.neo_contract.abi.build_params import BuildParams
 

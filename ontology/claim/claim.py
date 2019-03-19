@@ -1,15 +1,14 @@
 import uuid
 import base64
+import time
 
-from time import time, sleep
+from ontology.account import Account
+from ontology.exception import SDKException, ErrorCode
 
 from ontology.claim.header import Header
 from ontology.crypto.digest import Digest
 from ontology.claim.payload import Payload
-from account import Account
 from ontology.claim.proof import BlockchainProof
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
 from ontology.merkle.merkle_verifier import MerkleVerifier
 from ontology.crypto.signature_handler import SignatureHandler
 
@@ -67,7 +66,7 @@ class Claim(object):
         if jti == '':
             jti = Digest.sha256(uuid.uuid1().bytes, is_hex=True)
         self.__head = Header(kid)
-        self.__payload = Payload(ver, iss_ont_id, sub_ont_id, int(time()), exp, context, clm, clm_rev, jti)
+        self.__payload = Payload(ver, iss_ont_id, sub_ont_id, int(time.time()), exp, context, clm, clm_rev, jti)
 
     def generate_signature(self, iss: Account, verify_kid: bool = True):
         if not isinstance(self.__head, Header) or not isinstance(self.__payload, Payload):

@@ -2,7 +2,7 @@
 
 import unittest
 
-from ontology.exception.error_code import ErrorCode
+from ontology.exception import ErrorCode
 
 
 class TestErrorCode(unittest.TestCase):

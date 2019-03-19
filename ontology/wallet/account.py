@@ -1,5 +1,4 @@
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 
 
 class AccountData(object):

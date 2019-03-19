@@ -6,8 +6,7 @@ import unittest
 from test import sdk, acct1, acct2, acct3, acct4
 
 from account import Account
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.utils.contract_data import ContractDataParser
 from ontology.crypto.signature_scheme import SignatureScheme
 from ontology.utils.contract_event import ContractEventParser

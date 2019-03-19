@@ -1,13 +1,11 @@
 import json
 import base64
+import enum
 
-from enum import Enum
-
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 
 
-class ClmAlg(Enum):
+class ClmAlg(enum.Enum):
     ES224 = 'ONT-ES224'
     ES256 = 'ONT-ES256'
     ES384 = 'ONT-ES384'
@@ -48,7 +46,7 @@ class ClmAlg(Enum):
             raise SDKException(ErrorCode.invalid_claim_alg)
 
 
-class ClmType(Enum):
+class ClmType(enum.Enum):
     raw_claim = 'JWT'
     witness_claim = 'JWT-X'
 

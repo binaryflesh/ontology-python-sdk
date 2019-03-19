@@ -7,7 +7,7 @@ from Cryptodome.Random.random import randint
 
 from test import sdk, acct1, acct2, acct3, acct4
 
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException
 from ontology.utils.contract_event import ContractEventParser
 
 

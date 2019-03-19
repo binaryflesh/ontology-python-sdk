@@ -9,8 +9,7 @@ from ontology.crypto.key_type import KeyType
 from ontology.core.transaction import Transaction
 from ontology.io.binary_reader import BinaryReader
 from ontology.io.memory_stream import StreamManager
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 
 
 class Attribute(object):

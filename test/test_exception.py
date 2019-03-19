@@ -2,9 +2,7 @@
 
 import unittest
 
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
-from ontology.exception.exception import SDKRuntimeException
+from ontology.exception import ErrorCode, SDKException, SDKRuntimeException
 
 
 class TestSDKException(unittest.TestCase):

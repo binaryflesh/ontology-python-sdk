@@ -2,9 +2,8 @@ import time
 
 from ontology.common.address import Address
 from account import Account
-from ontology.exception.error_code import ErrorCode
 from ontology.core.transaction import Transaction
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.utils.contract_data import ContractDataParser
 from ontology.utils.contract_event import ContractEventParser
 from ontology.smart_contract.neo_contract.invoke_function import InvokeFunction

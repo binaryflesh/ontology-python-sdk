@@ -4,7 +4,7 @@ import unittest
 
 from test import sdk, acct1, acct2
 
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException
 
 
 class TestNativeVm(unittest.TestCase):

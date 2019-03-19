@@ -3,7 +3,7 @@
 import unittest
 
 from ontology.crypto.ecies import ECIES
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException
 
 
 class EciesTest(unittest.TestCase):

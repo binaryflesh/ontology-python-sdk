@@ -2,8 +2,7 @@ from typing import List
 
 from ontology.common.define import DID_ONT
 from ontology.wallet.control import Control
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 
 
 class Identity(object):

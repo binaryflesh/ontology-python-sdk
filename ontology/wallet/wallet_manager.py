@@ -17,9 +17,8 @@ from ontology.wallet.wallet import WalletData
 from ontology.wallet.identity import Identity
 from ontology.wallet.account import AccountData
 from ontology.utils.utils import get_random_hex_str
-from ontology.exception.error_code import ErrorCode
 from ontology.wallet.account_info import AccountInfo
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.crypto.signature_scheme import SignatureScheme
 
 

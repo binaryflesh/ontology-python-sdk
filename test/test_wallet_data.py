@@ -9,7 +9,7 @@ from ontology.common.define import DID_ONT
 from ontology.wallet.wallet import WalletData
 from ontology.wallet.identity import Identity
 from ontology.wallet.account import AccountData
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException
 
 
 class TestWalletData(unittest.TestCase):

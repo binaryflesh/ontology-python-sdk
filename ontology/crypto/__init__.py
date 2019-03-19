@@ -1,3 +1,6 @@
+"""
+TODO: copy paste documentation
+"""
 def str_to_bytes(s: str) -> bytes:
     if isinstance(s, bytes):
         return s

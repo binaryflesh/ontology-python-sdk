@@ -12,7 +12,7 @@ from ontology.crypto.curve import Curve
 from account import Account
 from ontology.wallet.account import AccountData
 from ontology.crypto.signature import Signature
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException
 from ontology.wallet.wallet_manager import WalletManager
 from ontology.crypto.signature_scheme import SignatureScheme
 

@@ -1,13 +1,12 @@
-"""
-Ontology Binary Writer
-"""
-
 import struct
 import binascii
 
 from ontology.io.memory_stream import StreamManager
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
+
+"""
+Ontology Binary Writer
+"""
 
 
 def swap32(i):

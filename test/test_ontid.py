@@ -12,7 +12,7 @@ from ontology.crypto.curve import Curve
 from ontology.common.define import DID_ONT
 from account import Account
 from ontology.crypto.signature import Signature
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException
 from ontology.utils.contract_data import ContractDataParser
 from ontology.crypto.signature_scheme import SignatureScheme
 from ontology.utils.contract_event import ContractEventParser

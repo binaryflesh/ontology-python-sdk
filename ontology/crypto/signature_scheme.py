@@ -1,11 +1,10 @@
-from enum import IntEnum, unique
+import enum
 
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 
 
-@unique
-class SignatureScheme(IntEnum):
+@enum.unique
+class SignatureScheme(enum.IntEnum):
     SHA224withECDSA = 0
     SHA256withECDSA = 1
     SHA384withECDSA = 2

@@ -1,3 +1,7 @@
+from Cryptodome.Protocol import KDF
+
+from ontology.exception import SDKException, ErrorCode
+
 """
 Description:
     Derive key from a passphrase.
@@ -5,11 +9,6 @@ Description:
 Usage:
     from ontology.crypto.scrypt import Scrypt
 """
-
-from Cryptodome.Protocol import KDF
-
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
 
 
 class Scrypt:

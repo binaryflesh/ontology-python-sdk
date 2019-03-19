@@ -17,8 +17,7 @@ from ecdsa.keys import (
 from ontology import type_assert
 from ontology.crypto.kdf import pbkdf2
 from ontology.crypto.aes_handler import AESHandler
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 
 
 class ECIES:

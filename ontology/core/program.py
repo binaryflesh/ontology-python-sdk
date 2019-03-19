@@ -1,15 +1,14 @@
 from typing import List
-
 from ecdsa import util
+
+from exception import SDKException, ErrorCode
 from ontology.crypto.key_type import KeyType
 from ontology.utils.utils import bytes_reader
 from ontology.io.binary_reader import BinaryReader
 from ontology.io.binary_writer import BinaryWriter
 from ontology.core.program_info import ProgramInfo
 from ontology.io.memory_stream import StreamManager
-from ontology.exception.error_code import ErrorCode
 from ontology.vm.params_builder import ParamsBuilder
-from ontology.exception.exception import SDKException
 from ontology.vm.op_code import PUSHBYTES75, PUSHBYTES1, PUSHDATA1, PUSHDATA2, PUSHDATA4, CHECKSIG, CHECKMULTISIG, PUSH1
 
 MULTI_SIG_MAX_PUBKEY_SIZE = 16

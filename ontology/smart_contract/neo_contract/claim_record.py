@@ -1,6 +1,5 @@
-from account import Account
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.account import Account
+from ontology.exception import SDKException, ErrorCode
 from ontology.utils.contract_data import ContractDataParser
 from ontology.utils.contract_event import ContractEventParser
 from ontology.smart_contract.neo_contract.invoke_function import InvokeFunction

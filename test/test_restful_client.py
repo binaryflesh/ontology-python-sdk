@@ -6,7 +6,7 @@ from test import sdk, acct4, acct3
 
 from ontology.common.address import Address
 from account import Account
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException
 from ontology.utils.contract_data import ContractDataParser
 from ontology.crypto.signature_scheme import SignatureScheme
 

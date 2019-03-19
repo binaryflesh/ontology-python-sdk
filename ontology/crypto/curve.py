@@ -1,8 +1,8 @@
 from enum import Enum, unique
 from cryptography.hazmat.primitives.asymmetric import ec
 
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import ErrorCode
+from ontology.exception import SDKException
 
 
 @unique
