@@ -2,8 +2,7 @@ from Cryptodome.Random.random import choice
 
 from ontology.service.service import Service
 from ontology.smart_contract.neo_vm import NeoVm
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.smart_contract.native_vm import NativeVm
 from ontology.network.websocket import WebsocketClient
 from ontology.wallet.wallet_manager import WalletManager

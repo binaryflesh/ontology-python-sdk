@@ -1,7 +1,7 @@
 import json
 import base64
 
-from account import Account
+from ontology.account import Account
 from ontology.wallet.wallet import WalletData
 from ontology.wallet.identity import Identity
 from ontology.wallet.account import AccountData

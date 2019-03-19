@@ -2,7 +2,7 @@ import base58
 
 from typing import List
 
-from ontology.vm.op_code import CHECKSIG
+from ontology.vm import CHECKSIG
 from ontology.exception import ErrorCode
 from ontology.crypto.digest import Digest
 from ontology.exception import SDKException

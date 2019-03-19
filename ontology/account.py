@@ -11,8 +11,7 @@ from ontology.crypto.signature import Signature
 from ontology.crypto.aes_handler import AESHandler
 from ontology.io.binary_writer import BinaryWriter
 from ontology.io.memory_stream import StreamManager
-from ontology.exception.error_code import ErrorCode
-from ontology.exception.exception import SDKException
+from ontology.exception import SDKException, ErrorCode
 from ontology.crypto.signature_scheme import SignatureScheme
 from ontology.crypto.signature_handler import SignatureHandler
 

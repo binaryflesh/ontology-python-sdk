@@ -1,3 +1,4 @@
+# TODO: move to common/__init__.py
 VERSION_TRANSACTION = b'\x00'
 VERSION_CONTRACT_ONT = b'\x00'
 VERSION_CONTRACT_ONG = b'\x00'

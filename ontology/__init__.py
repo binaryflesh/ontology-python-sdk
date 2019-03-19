@@ -2,14 +2,14 @@ from functools import wraps
 from inspect import signature
 from typing import List
 
-from common.define import DID_ONT
-from exception import ErrorCode, SDKException
-from common.address import Address
-from vm.op_code import PUSHM1, PUSH0
-from io.binary_reader import BinaryReader
-from io.memory_stream import StreamManager
-from smart_contract.neo_contract.abi.struct_type import Struct
-from smart_contract.neo_contract.abi.build_params import BuildParams
+from ontology.common.define import DID_ONT
+from ontology.exception import ErrorCode, SDKException
+from ontology.common.address import Address
+from ontology.vm import PUSHM1, PUSH0
+from ontology.io.binary_reader import BinaryReader
+from ontology.io.memory_stream import StreamManager
+from ontology.smart_contract.neo_contract.abi.struct_type import Struct
+from ontology.smart_contract.neo_contract.abi.build_params import BuildParams
 
 __version__ = '0.1'
 

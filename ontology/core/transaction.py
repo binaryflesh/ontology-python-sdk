@@ -4,7 +4,7 @@ from enum import Enum
 from ontology.core.sig import Sig
 from ontology.crypto.digest import Digest
 from ontology.common.address import Address
-from account import Account
+from ontology.account import Account
 from ontology.core.program import ProgramBuilder
 from ontology.io.binary_writer import BinaryWriter
 from ontology.io.binary_reader import BinaryReader

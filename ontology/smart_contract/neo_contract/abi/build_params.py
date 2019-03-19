@@ -6,7 +6,8 @@ from ontology.exception import SDKException, ErrorCode
 from ontology.smart_contract.neo_contract.abi.struct_type import Struct
 from ontology.smart_contract.neo_contract.abi.abi_function import AbiFunction
 
-from ontology.vm.op_code import (
+# TODO: from ontology.vm import ontology as vm
+from ontology.vm import (
     PACK,
     NEWMAP,
     TOALTSTACK,
@@ -15,7 +16,7 @@ from ontology.vm.op_code import (
     FROMALTSTACK,
     NEWSTRUCT,
     SWAP,
-    APPEND
+    APPEND,
 )
 
 

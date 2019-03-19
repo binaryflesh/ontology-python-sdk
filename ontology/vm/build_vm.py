@@ -1,4 +1,4 @@
-from ontology.vm.op_code import *
+from vm import *
 from ontology.vm.params_builder import ParamsBuilder
 
 

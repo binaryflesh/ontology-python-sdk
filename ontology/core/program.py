@@ -9,7 +9,17 @@ from ontology.io.binary_writer import BinaryWriter
 from ontology.core.program_info import ProgramInfo
 from ontology.io.memory_stream import StreamManager
 from ontology.vm.params_builder import ParamsBuilder
-from ontology.vm.op_code import PUSHBYTES75, PUSHBYTES1, PUSHDATA1, PUSHDATA2, PUSHDATA4, CHECKSIG, CHECKMULTISIG, PUSH1
+
+from ontology.vm import (
+    PUSHBYTES75,
+    PUSHBYTES1,
+    PUSHDATA1,
+    PUSHDATA2,
+    PUSHDATA4,
+    CHECKSIG,
+    CHECKMULTISIG,
+    PUSH1,
+)
 
 MULTI_SIG_MAX_PUBKEY_SIZE = 16
 

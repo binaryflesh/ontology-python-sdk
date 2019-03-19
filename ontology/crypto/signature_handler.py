@@ -4,7 +4,7 @@ from ecdsa import (
     ellipticcurve,
     numbertheory,
     util,
-    keys
+    keys,
 )
 
 from hashlib import sha256

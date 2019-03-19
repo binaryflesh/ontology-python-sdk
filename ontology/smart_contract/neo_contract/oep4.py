@@ -1,7 +1,7 @@
 import time
 
 from ontology.common.address import Address
-from account import Account
+from ontology.account import Account
 from ontology.core.transaction import Transaction
 from ontology.exception import SDKException, ErrorCode
 from ontology.utils.contract_data import ContractDataParser

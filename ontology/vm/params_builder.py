@@ -1,6 +1,7 @@
 from ontology.io.memory_stream import MemoryStream
 from ontology.exception import SDKException, ErrorCode
-from ontology.vm.op_code import PUSHDATA1, PUSHDATA2, PUSHDATA4, PUSH0, PUSH1, PUSHM1, PUSHBYTES75, APPCALL
+from ontology.vm import *
+# PUSHDATA1, PUSHDATA2, PUSHDATA4, PUSH0, PUSH1, PUSHM1, PUSHBYTES75, APPCALL
 
 
 class ParamsBuilder:
