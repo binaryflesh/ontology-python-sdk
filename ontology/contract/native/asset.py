@@ -1,11 +1,15 @@
 from time import time
 
-from ontology.common.address import Address
-from ontology.account import Account
-from ontology.core.transaction import Transaction
-from ontology.exception import SDKException, ErrorCode
-from ontology.vm.build_vm import build_native_invoke_code
-from ontology.utils.contract_data import ContractDataParser
+from core.transaction import Transaction
+from vm.build_vm import build_native_invoke_code
+from utils.contract_data import ContractDataParser
+
+from ontology import (
+    Address,
+    Account,
+    SDKException,
+    ErrorCode,
+)
 
 
 class Asset(object):

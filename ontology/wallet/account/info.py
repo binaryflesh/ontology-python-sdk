@@ -1,4 +1,3 @@
-# TODO: move to account.py
 class AccountInfo:
     def __init__(self):
         self.address_base58 = ''

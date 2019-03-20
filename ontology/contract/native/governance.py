@@ -1,14 +1,18 @@
 from time import time
 from binascii import a2b_hex
 
-from ontology.account import Account
-from ontology.common.address import Address
+from ontology import (
+    Address,
+    Account,
+    Identity,
+    Transaction,
+)
+
 from ontology.core.transaction import Transaction
 from ontology.io.binary_reader import BinaryReader
 from ontology.io.binary_writer import BinaryWriter
 from ontology.io.memory_stream import StreamManager
 from ontology.vm.build_vm import build_native_invoke_code
-from ontology.wallet.identity import Identity
 
 
 class Governance(object):

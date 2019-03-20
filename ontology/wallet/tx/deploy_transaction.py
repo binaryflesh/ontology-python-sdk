@@ -1,4 +1,4 @@
-from ontology.core.transaction import Transaction, TransactionType
+from common.transaction import Transaction, TransactionType
 from ontology.io.binary_writer import BinaryWriter
 
 

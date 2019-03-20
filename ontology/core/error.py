@@ -1,14 +1,4 @@
-class SDKException(Exception):
-    def __init__(self, error_code: dict):
-        super().__init__(error_code['error'], error_code['desc'])
-
-
-class SDKRuntimeException(RuntimeError):
-    def __init__(self, error_code: dict):
-        super().__init__(error_code['error'], error_code['desc'])
-
-
-class ErrorCode:
+class SDKError:
     @staticmethod
     def get_error(code: int, msg: str) -> dict:
         data = dict()
@@ -18,15 +8,15 @@ class ErrorCode:
 
     @staticmethod
     def unpack_error(msg: str) -> dict:
-        return ErrorCode.get_error(10001, f'Binary Reader Error, {msg}')
+        return SDKError.get_error(10001, f'Binary Reader Error, {msg}')
 
     @staticmethod
     def read_byte_error(msg: str) -> dict:
-        return ErrorCode.get_error(10002, f'Binary Reader Error, {msg}')
+        return SDKError.get_error(10002, f'Binary Reader Error, {msg}')
 
     @staticmethod
     def params_type_error(msg: str) -> dict:
-        return ErrorCode.get_error(20000, 'Interface Error, ' + msg)
+        return SDKError.get_error(20000, 'Interface Error, ' + msg)
 
     require_bool_params = get_error.__func__(20001, 'Interface Error, the type of parameter should be int.')
     require_int_params = get_error.__func__(20002, 'Interface Error, the type of parameter should be int.')
@@ -49,17 +39,17 @@ class ErrorCode:
 
     @staticmethod
     def invalid_ont_id_format(ont_id: str):
-        return ErrorCode.get_error(30001, f'Identity Error, invalid OntId: {ont_id}')
+        return SDKError.get_error(30001, f'Identity Error, invalid OntId: {ont_id}')
 
     invalid_ont_id_type = get_error.__func__(30002, 'Identity Error, invalid type of OntId')
 
     @staticmethod
     def invalid_wallet_path(path: str):
-        return ErrorCode.get_error(40001, f'WalletManager Error, invalid path: {path}')
+        return SDKError.get_error(40001, f'WalletManager Error, invalid path: {path}')
 
     @staticmethod
     def invalid_contract_address(contract_address: str):
-        return ErrorCode.get_error(50001, f'NeoVm Error, invalid hex contract address: {contract_address}')
+        return SDKError.get_error(50001, f'NeoVm Error, invalid hex contract address: {contract_address}')
 
     invalid_private_key = get_error.__func__(100001, 'Account Error, invalid private key.')
     unsupported_key_type = get_error.__func__(100002, 'Account Error, unsupported key type.')
@@ -107,7 +97,7 @@ class ErrorCode:
 
     @staticmethod
     def constructed_root_hash_err(msg: str) -> dict:
-        return ErrorCode.get_error(400003, "Other Error, " + msg)
+        return SDKError.get_error(400003, "Other Error, " + msg)
 
     assert_failed_hash_full_tree = get_error.__func__(400004, "assert failed in hash full tree")
     left_tree_full = get_error.__func__(400005, "left tree always full")
@@ -122,7 +112,7 @@ class ErrorCode:
 
     @staticmethod
     def param_err(msg: str):
-        return ErrorCode.get_error(800005, msg)
+        return SDKError.get_error(800005, msg)
 
     did_null = get_error.__func__(800006, "OntIdTx Error, SendDid or receiverDid is null in metaData")
     not_exist_claim_issuer = get_error.__func__(800007, "OntIdTx Error, Not exist claim issuer")
@@ -141,7 +131,7 @@ class ErrorCode:
 
     @staticmethod
     def get_status_err(msg: str) -> dict:
-        return ErrorCode.get_error(800017, "GetStatus Error," + msg)
+        return SDKError.get_error(800017, "GetStatus Error," + msg)
 
     # OntAsset Error
     asset_name_error = get_error.__func__(800101, "OntAsset Error, asset name error")
@@ -165,7 +155,7 @@ class ErrorCode:
 
     @staticmethod
     def connect_err(msg: str) -> dict:
-        return ErrorCode.get_error(800403, "connect error: " + msg)
+        return SDKError.get_error(800403, "connect error: " + msg)
 
     # WalletManager Error
     get_account_by_address_err = get_error.__func__(800501, "WalletManager Error, get account by address error")
@@ -174,4 +164,4 @@ class ErrorCode:
 
     @staticmethod
     def other_error(msg: str) -> dict:
-        return ErrorCode.get_error(59000, "Other Error, " + msg)
+        return SDKError.get_error(59000, "Other Error, " + msg)

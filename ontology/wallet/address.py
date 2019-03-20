@@ -1,13 +1,12 @@
 import base58
+import typing
+import ontology.vm as ont_vm
 
-from typing import List
-
-from ontology.vm import CHECKSIG
-from ontology.exception import ErrorCode
-from ontology.crypto.digest import Digest
-from ontology.exception import SDKException
-from ontology.core.program import ProgramBuilder
-from ontology.vm.params_builder import ParamsBuilder
+from common.error import SDKError
+from common.exception import SDKException
+from crypto.digest import Digest
+from core.program import ProgramBuilder
+from vm.params_builder import ParamsBuilder
 
 
 class Address(object):
@@ -15,9 +14,9 @@ class Address(object):
 
     def __init__(self, script_hash: bytes):
         if not isinstance(script_hash, bytes):
-            raise SDKException(ErrorCode.other_error('Invalid script hash.'))
-        if len(script_hash) != 20:
-            raise SDKException(ErrorCode.other_error('Invalid script hash.'))
+            raise SDKException(SDKError.other_error('Invalid script hash.'))
+        elif len(script_hash) != 20:
+            raise SDKException(SDKError.other_error('Invalid script hash.'))
         self.ZERO = script_hash
 
     @staticmethod
@@ -28,16 +27,16 @@ class Address(object):
     def address_from_bytes_pubkey(public_key: bytes):
         builder = ParamsBuilder()
         builder.emit_push_bytearray(bytearray(public_key))
-        builder.emit(CHECKSIG)
+        builder.emit(ont_vm.CHECKSIG)
         addr = Address(Address.to_script_hash(builder.to_bytes()))
         return addr
 
     @staticmethod
-    def address_from_multi_pub_keys(m: int, pub_keys: List[bytes]):
+    def address_from_multi_pub_keys(m: int, pub_keys: typing.List[bytes]):
         return Address(Address.to_script_hash(ProgramBuilder.program_from_multi_pubkey(m, pub_keys)))
 
     @staticmethod
-    def b58_address_from_multi_pub_keys(m: int, pub_keys: List[bytes]):
+    def b58_address_from_multi_pub_keys(m: int, pub_keys: typing.List[bytes]):
         return Address(Address.to_script_hash(ProgramBuilder.program_from_multi_pubkey(m, pub_keys))).b58encode()
 
     @staticmethod
@@ -74,10 +73,10 @@ class Address(object):
     def b58decode(address: str):
         data = base58.b58decode(address)
         if len(data) != 25:
-            raise SDKException(ErrorCode.param_error)
+            raise SDKException(SDKError.param_error)
         if data[0] != int.from_bytes(Address.__COIN_VERSION, "little"):
-            raise SDKException(ErrorCode.param_error)
+            raise SDKException(SDKError.param_error)
         checksum = Digest.hash256(data[0:21])
         if data[21:25] != checksum[0:4]:
-            raise SDKException(ErrorCode.param_error)
+            raise SDKException(SDKError.param_error)
         return Address(data[1:21])

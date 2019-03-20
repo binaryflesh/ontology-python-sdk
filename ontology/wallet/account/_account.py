@@ -1,19 +1,23 @@
 import base64
 import base58
 
-from ontology.crypto.curve import Curve
-from ontology.crypto.digest import Digest
-from ontology.crypto.scrypt import Scrypt
-from ontology.common.define import DID_ONT
-from ontology.common.address import Address
-from ontology.crypto.key_type import KeyType
-from ontology.crypto.signature import Signature
-from ontology.crypto.aes_handler import AESHandler
-from ontology.io.binary_writer import BinaryWriter
-from ontology.io.memory_stream import StreamManager
-from ontology.exception import SDKException, ErrorCode
-from ontology.crypto.signature_scheme import SignatureScheme
-from ontology.crypto.signature_handler import SignatureHandler
+import ontology.core as ont
+
+from common.address import Address
+from common.exception import SDKException
+from common.error import SDKError
+
+from crypto.curve import Curve
+from crypto.digest import Digest
+from crypto.scrypt import Scrypt
+from crypto.key_type import KeyType
+from crypto.signature import Signature
+from crypto.aes_handler import AESHandler
+from crypto.signature_scheme import SignatureScheme
+from crypto.signature_handler import SignatureHandler
+
+from io.binary_writer import BinaryWriter
+from io.memory_stream import StreamManager
 
 
 class Account(object):
@@ -36,7 +40,7 @@ class Account(object):
         elif isinstance(private_key, str) and len(private_key) == 64:
             self.__private_key = bytes.fromhex(private_key)
         else:
-            raise SDKException(ErrorCode.invalid_private_key)
+            raise SDKException(SDKError.invalid_private_key)
         self.__curve_name = Curve.P256
         self.__public_key = Signature.ec_get_public_key_by_private_key(self.__private_key, self.__curve_name)
         self.__address = Address.address_from_bytes_pubkey(self.__public_key)
@@ -48,17 +52,17 @@ class Account(object):
         bytes_signature = Signature(self.__signature_scheme, signature_value).to_bytes()
         result = handler.verify_signature(self.__public_key, msg, bytes_signature)
         if not result:
-            raise SDKException(ErrorCode.invalid_signature_data)
+            raise SDKException(SDKError.invalid_signature_data)
         return bytes_signature
 
     def verify_signature(self, msg: bytes, signature: bytes):
         if msg is None or signature is None:
-            raise Exception(ErrorCode.param_err("param should not be None"))
+            raise Exception(SDKError.param_err("param should not be None"))
         handler = SignatureHandler(self.__signature_scheme)
         return handler.verify_signature(self.get_public_key_bytes(), msg, signature)
 
     def get_ont_id(self):
-        return DID_ONT + self.get_address_base58()
+        return ont.DID_ONT + self.get_address_base58()
 
     def get_address(self):
         """
@@ -152,10 +156,10 @@ class Account(object):
         cipher_text = bytes.fromhex(encrypted_key[0:64])
         private_key = AESHandler.aes_gcm_decrypt_with_iv(cipher_text, b58_address.encode(), mac_tag, key, iv)
         if len(private_key) == 0:
-            raise SDKException(ErrorCode.decrypt_encrypted_private_key_error)
+            raise SDKException(SDKError.decrypt_encrypted_private_key_error)
         acct = Account(private_key, scheme)
         if acct.get_address().b58encode() != b58_address:
-            raise SDKException(ErrorCode.other_error('Address error.'))
+            raise SDKException(SDKError.other_error('Address error.'))
         return private_key.hex()
 
     def get_public_key_serialize(self):
@@ -164,7 +168,7 @@ class Account(object):
         if self.__key_type == KeyType.ECDSA:
             writer.write_var_bytes(self.__public_key)
         else:
-            raise SDKException(ErrorCode.unknown_asymmetric_key_type)
+            raise SDKException(SDKError.unknown_asymmetric_key_type)
         stream.flush()
         bytes_stream = stream.hexlify()
         StreamManager.release_stream(stream)

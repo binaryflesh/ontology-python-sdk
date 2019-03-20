@@ -1,11 +1,11 @@
 import json
 import base64
 
-from ontology.account import Account
-from ontology.wallet.wallet import WalletData
-from ontology.wallet.identity import Identity
-from ontology.wallet.account import AccountData
-from ontology.crypto.signature_scheme import SignatureScheme
+from .account import Account
+from wallet.wallet import WalletData
+from wallet.identity import Identity
+from wallet.account import AccountData
+from crypto.signature_scheme import SignatureScheme
 
 
 class WalletQR(object):

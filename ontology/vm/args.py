@@ -1,6 +1,6 @@
 from ontology.io.memory_stream import MemoryStream
 from ontology.exception import SDKException, ErrorCode
-from ontology.vm import *
+import ontology.vm as ont_vm
 # PUSHDATA1, PUSHDATA2, PUSHDATA4, PUSH0, PUSH1, PUSHM1, PUSHBYTES75, APPCALL
 
 
