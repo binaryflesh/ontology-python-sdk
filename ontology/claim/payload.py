@@ -1,8 +1,8 @@
 import json
 import base64
 
-from ontology.crypto.digest import Digest
-from ontology.exception import SDKException, ErrorCode
+from crypto.digest import Digest
+from ontology import SDKException, ErrorCode
 
 
 class Payload(object):
@@ -78,6 +78,17 @@ class Payload(object):
     @property
     def clm_rev(self):
         return self.__claim_revoke
+
+    def __repr__(self):
+        return {'version': self.ver,
+                'issuer_ont_id': self.iss,
+                'subject': self.sub,
+                'issued_at': self.iat,
+                'expires_at': self.exp,
+                'jwt': self.jti,
+                'context': self.context,
+                'claim': self.clm,
+                'claim_revoke': self.clm_rev}
 
     def to_json_str(self):
         return json.dumps(dict(self))

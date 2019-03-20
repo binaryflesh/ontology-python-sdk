@@ -1,8 +1,8 @@
 import base64
 import json
+import claim.verify
 
-from claim.verify import MerkleRoot
-from ontology.exception import SDKException, ErrorCode
+from ontology import SDKException, ErrorCode
 
 
 class BlockchainProof(object):
@@ -24,7 +24,7 @@ class BlockchainProof(object):
         return self.__blk_proof
 
     @proof.setter
-    def proof(self, args):
+    def proof(self, *args):
         blk_proof = args[0]
         try:
             is_big_endian = args[1]
@@ -65,7 +65,7 @@ class BlockchainProof(object):
             raise SDKException(ErrorCode.require_list_params)
         self.__blk_proof['Nodes'] = proof_node
 
-    def validate_blk_proof(self, is_big_endian: bool = False) -> bool:
+    def validate_blk_proof(self, is_big_endian=False) -> bool:
         if self.__blk_proof.get('Type', '') != 'MerkleProof':
             raise SDKException(ErrorCode.invalid_blk_proof)
         try:
@@ -90,7 +90,7 @@ class BlockchainProof(object):
         blk_head = block.get('Header', dict())
         target_hash = blk_head.get('TransactionsRoot', '')
         try:
-            result = MerkleRoot.validate_proof(proof_node, target_hash, merkle_root, is_big_endian)
+            result = claim.verify(proof_node, target_hash, merkle_root, is_big_endian)
         except SDKException:
             result = False
         return result
@@ -98,15 +98,12 @@ class BlockchainProof(object):
     def to_json(self) -> str:
         return json.dumps(self.__blk_proof)
 
-    def from_json(self, json_blk_proof: str, is_big_endian: bool = False):
-        if not isinstance(json_blk_proof, str):
-            raise SDKException(ErrorCode.require_str_params)
+    def from_json(self, json_blk_proof: str, is_big_endian=False):
         try:
             dict_blk_proof = json.loads(json_blk_proof)
         except json.decoder.JSONDecodeError:
             raise SDKException(ErrorCode.invalid_b64_claim_data)
-        proof = BlockchainProof(self.__sdk)
-        proof.proof = dict_blk_proof, is_big_endian
+        proof = super(BlockchainProof).__init__(self.__sdk).proof = dict_blk_proof, is_big_endian
         return proof
 
     def to_bytes(self) -> bytes:
@@ -116,6 +113,6 @@ class BlockchainProof(object):
     def to_base64(self) -> str:
         return base64.b64encode(self.to_bytes()).decode('ascii')
 
-    def from_base64(self, b64_blk_proof: str, is_big_endian: bool = False):
+    def from_base64(self, b64_blk_proof: str, is_big_endian=False):
         json_blk_proof = base64.b64decode(b64_blk_proof).decode('utf-8')
         return self.from_json(json_blk_proof, is_big_endian)

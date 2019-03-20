@@ -1,25 +1,28 @@
-from .proof import Proof
-from .header import Header
-from .verify import Merkle
-from .payload import Payload
-
 import uuid
 import time
+import claim
 import base64
 
-from ontology.account import Account
-from ontology.crypto.digest import Digest
-from ontology.crypto.signature_handler import SignatureHandler
-from ontology.exception import SDKException, ErrorCode
+from account import Account
+from crypto.digest import Digest
+from crypto.signature_handler import SignatureHandler
+
+from ontology import SDKException, ErrorCode
+
+from claim.proof import BlockchainProof
+from claim.payload import Payload
+from claim.header import Header
+from claim.verify import VerifyTx
 
 
 class Claim(object):
+
     def __init__(self, sdk):
         self.__sdk = sdk
         self.__head = None
         self.__payload = None
         self.__signature = b''
-        self.__blk_proof = Proof(sdk)
+        self.__blk_proof = BlockchainProof(sdk)
 
     def __iter__(self):
         data = dict(Header=dict(self.__head), Payload=dict(self.__payload), Signature=self.to_str_signature(),
@@ -29,7 +32,7 @@ class Claim(object):
 
     @property
     def claim_id(self):
-        if not isinstance(self.__payload, Payload):
+        if self.__payload is None:
             return ''
         return self.__payload.jti
 
@@ -41,7 +44,7 @@ class Claim(object):
     def head(self, kid: str):
         if not isinstance(kid, str):
             raise SDKException(ErrorCode.require_str_params)
-        self.__head = Header(kid)
+        self.__head = claim.header.Header(kid)
 
     @property
     def payload(self):
@@ -120,28 +123,28 @@ class Claim(object):
     def from_base64_signature(b64_signature: str):
         return bytes.hex(base64.b64decode(b64_signature))
 
-    def generate_blk_proof(self, iss_acct: Account, payer: Account, gas_limit: int, gas_price: int,
-                           is_big_endian: bool = True, hex_contract_address: str = ''):
-        if not isinstance(hex_contract_address, str):
-            raise SDKException(ErrorCode.require_str_params)
-        if len(hex_contract_address) != 0 and len(hex_contract_address) == 40:
-            self.__sdk.neo_vm.claim_record().hex_contract_address = hex_contract_address
-        tx_hash = self.__sdk.neo_vm.claim_record().commit(self.payload.jti, iss_acct, self.payload.sub, payer,
-                                                          gas_limit, gas_price)
-        time.sleep(12)
-        hex_contract_address = self.__sdk.neo_vm.claim_record().hex_contract_address
-        merkle_proof = self.__sdk.get_network().get_merkle_proof(tx_hash)
-        tx_block_height = merkle_proof['BlockHeight']
-        current_block_height = merkle_proof['CurBlockHeight']
-        target_hash = merkle_proof['TransactionsRoot']
-        merkle_root = merkle_proof['CurBlockRoot']
-        target_hash_list = merkle_proof['TargetHashes']
-        proof_node = MerkleVerifier.get_proof(tx_block_height, target_hash_list, current_block_height)
-        result = MerkleVerifier.validate_proof(proof_node, target_hash, merkle_root, is_big_endian)
-        if not result:
-            raise SDKException(ErrorCode.other_error('Invalid merkle proof'))
-        self.__blk_proof.set_proof(tx_hash, hex_contract_address, tx_block_height, merkle_root, proof_node)
-        return self.__blk_proof
+    def generate_blk_proof(self, iss_acct: Account, payer: Account, gas_limit: int,
+                           gas_price: int, is_big_endian=True, hex_contract_addr=''):
+        while True:
+            if isinstance(hex_contract_addr, str) and len(hex_contract_addr) == 40:
+                continue
+            self.__sdk.neo_vm.claim_record().hex_contract_address = hex_contract_addr
+            tx = self.__sdk.neo_vm.claim_record()
+            tx_hash = yield tx.commit(self.payload.jti, iss_acct, self.payload.sub, payer, gas_limit, gas_price)
+            time.sleep(12)
+            proof = VerifyTx(self.__sdk)
+            hex_contract_addr = self.__sdk.neo_vm.claim_record().hex_contract_address
+            merkle_proof = self.__sdk.get_network().get_merkle_proof(tx_hash)
+            tx_block_height = merkle_proof['BlockHeight']
+            current_block_height = merkle_proof['CurBlockHeight']
+            target_hash = merkle_proof['TransactionsRoot']
+            merkle_root = merkle_proof['CurBlockRoot']
+            target_hash_list = merkle_proof['TargetHashes']
+            proof_node = claim.verify.get_proof_node(tx_block_height, target_hash_list, current_block_height)
+            if not claim.verify.verify_proof(proof_node, target_hash, merkle_root, is_big_endian):
+                raise SDKException(ErrorCode.invalid_merkle_root)
+            self.__blk_proof.set_proof(tx_hash, hex_contract_addr, tx_block_height, merkle_root, proof_node)
+            return self.__blk_proof
 
     def validate_blk_proof(self, is_big_endian: bool = True):
         return self.__blk_proof.validate_blk_proof(is_big_endian)
@@ -161,4 +164,4 @@ class Claim(object):
         self.__head = Header.from_base64(b64_head)
         self.__payload = Payload.from_base64(b64_payload)
         self.__signature = base64.b64decode(b64_signature)
-        self.__blk_proof = BlockchainProof(self.__sdk).from_base64(b64_blk_proof, is_big_endian)
+        self.__blk_proof = claim.proof.BlockchainProof(self.__sdk).from_base64(b64_blk_proof, is_big_endian)

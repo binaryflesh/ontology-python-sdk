@@ -1,7 +1,8 @@
-from .merkle import MerkleVerifier as MerkleRoot
-from .tx import TxVerifier as Tx
+from .merkle import get_proof_node, verify_proof
+from .tx import TxVerifier as VerifyTx
 
 __all__ = (
-    'MerkleRoot',
-    'Tx',
+    "get_proof_node",
+    "verify_proof",
+    "VerifyTx",
 )

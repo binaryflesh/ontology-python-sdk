@@ -3,15 +3,26 @@ from inspect import signature
 from typing import List
 
 from ontology.common.define import DID_ONT
-from ontology.exception import ErrorCode, SDKException
 from ontology.common.address import Address
 from ontology.vm import PUSHM1, PUSH0
 from ontology.io.binary_reader import BinaryReader
 from ontology.io.memory_stream import StreamManager
 from ontology.smart_contract.neo_contract.abi.struct_type import Struct
 from ontology.smart_contract.neo_contract.abi.build_params import BuildParams
+from ontology.exception import SDKException, ErrorCode
 
 __version__ = '0.1'
+
+__any__ = (
+    "SDKException",
+    "ErrorCode",
+    "DID_ONT",
+    "Address",
+    "BinaryReader",
+    "StreamManager",
+    "Struct",
+    "BuildParams",
+)
 
 
 def check_ont_id(func):

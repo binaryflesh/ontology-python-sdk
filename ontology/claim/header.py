@@ -2,7 +2,7 @@ import json
 import base64
 import enum
 
-from ontology.exception import SDKException, ErrorCode
+from ontology import SDKException, ErrorCode
 
 
 class ClmAlg(enum.Enum):
@@ -63,6 +63,7 @@ class ClmType(enum.Enum):
 
 
 class Header(object):
+    # TODO: rename kid
     def __init__(self, kid: str, alg: ClmAlg or str = ClmAlg.ES256, claim_type: ClmType = ClmType.witness_claim):
         if not isinstance(kid, str):
             raise SDKException(ErrorCode.require_str_params)

@@ -1,5 +1,3 @@
-from .chain import BlockchainProof as Proof
+from .blockchain import BlockchainProof
 
-__all__ = (
-    "Proof",
-)
+__all__ = "BlockchainProof"
